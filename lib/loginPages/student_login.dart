@@ -95,7 +95,7 @@ class _StudentLoginPageState extends State<StudentLoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) return 'Please enter your email';
-                        if (!value.contains('@student')) return 'Enter a valid student email';
+                        if (!value.contains('@')) return 'Enter a valid student email';
                         return null;
                       },
                     ),

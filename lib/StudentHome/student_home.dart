@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_projects/StudentHome/student_profile.dart';
 import 'bus_routes.dart'; // Import the Bus Routes Page
 
 class StudentHomePage extends StatelessWidget {
@@ -88,6 +89,7 @@ class StudentHomePage extends StatelessWidget {
           ),
         ),
       ),
+      // In StudentHomePage class
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         selectedItemColor: Colors.orange,
@@ -98,7 +100,10 @@ class StudentHomePage extends StatelessWidget {
         ],
         onTap: (index) {
           if (index == 1) {
-            // Navigate to Profile Page (implement navigation here)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StudentProfilePage()),
+            );
           }
         },
       ),
