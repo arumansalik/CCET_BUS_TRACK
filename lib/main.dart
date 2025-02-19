@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_projects/AuthWrapper.dart';
 import 'package:flutter_projects/loginPages/driver_login.dart';
 import 'package:flutter_projects/loginPages/student_login.dart';
 
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'College Bus Tracker',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: RoleSelectionPage(),
+      home: AuthWrapper(),
     );
   }
 }
+
 
 
 

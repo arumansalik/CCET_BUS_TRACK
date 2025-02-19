@@ -95,7 +95,7 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) return 'Please enter your email';
-                        if (!value.contains('@')) return 'Enter a valid email';
+                        if (!value.contains('@driver')) return 'Enter a valid email';
                         return null;
                       },
                     ),
