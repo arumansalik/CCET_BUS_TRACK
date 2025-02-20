@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_projects/DriverHome/driver_home.dart';
 import 'package:flutter_projects/StudentHome/student_home.dart';
 import 'package:flutter_projects/main.dart';
+import 'package:lottie/lottie.dart';
 
 class AuthWrapper extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class AuthWrapper extends StatelessWidget {
 
           if (user == null) {
             // User not authenticated - show role selection
-            return RoleSelectionPage();
+            return GetStartedPage();
           } else {
             // User authenticated - determine role
             if (_isStudent(user)) {
@@ -24,7 +25,7 @@ class AuthWrapper extends StatelessWidget {
               return DriverHomePage();
             } else {
               // Unknown role - show role selection with logout
-              return _UnknownUserPage();
+              return GetStartedPage();
             }
           }
         }
@@ -34,36 +35,90 @@ class AuthWrapper extends StatelessWidget {
   }
 
   bool _isStudent(User user) {
-    // Check student email pattern (e.g., ends with @student.college.edu)
     return user.email?.endsWith('@gmail') ?? false;
   }
 
   bool _isDriver(User user) {
-    // Check driver email pattern or Firestore role
     return user.email?.endsWith('@driver') ?? false;
   }
 }
 
-class _UnknownUserPage extends StatelessWidget {
+class GetStartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade900, Colors.blue.shade400],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Unknown user type', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => RoleSelectionPage()),
-                );
-              },
-              child: Text('Return to Login'),
+            // Animated Illustration
+            Lottie.asset(
+              'assets/animations/bus_animation.json', // Ensure you add this Lottie animation
+              height: 350,
             ),
+            SizedBox(height: 30),
+
+            // Welcome Text
+            Text(
+              "Let's Get Started",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Track your college bus in real-time with ease.",
+              style: TextStyle(fontSize: 16, color: Colors.white70),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 40),
+
+            // Get Started Button
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => RoleSelectionPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 30),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.arrow_forward_ios, color: Colors.blue.shade900),
+                    SizedBox(width: 10),
+                    Text(
+                      "Get Started",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue.shade900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),

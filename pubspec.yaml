@@ -45,6 +45,7 @@ dependencies:
   google_places_flutter: ^2.0.9
   font_awesome_flutter: ^10.8.0
   flutter_native_splash: ^2.4.4
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
     - assets/img/logo.png
     - assets/img/driver_banner.png
     - assets/img/logo1.png
+    - assets/animations/bus_animation.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
