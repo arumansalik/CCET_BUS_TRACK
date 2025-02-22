@@ -4,6 +4,7 @@ import 'package:flutter_projects/DriverHome/driver_home.dart';
 import 'package:flutter_projects/StudentHome/student_home.dart';
 import 'package:flutter_projects/main.dart';
 import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthWrapper extends StatelessWidget {
   @override
@@ -55,28 +56,27 @@ class GetStartedPage extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.indigo.shade900, Colors.blue.shade500],
+                colors: [Colors.deepPurple.shade800, Colors.indigo.shade500],
               ),
             ),
           ),
-          // Content
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
-                // Lottie Animation
+                SizedBox(height: 50),
+                // Animated Illustration
                 Lottie.asset(
-                  'assets/animations/bus_animation.json',
-                  height: 320,
+                  'assets/animations/bus_animation.json', // Ensure you add this Lottie animation
+                  height: 350,
                 ),
                 SizedBox(height: 20),
 
-                // Title
+                // Welcome Text
                 Text(
                   "Let's Get Started",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -84,15 +84,13 @@ class GetStartedPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 10),
-
-                // Subtitle
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Text(
-                    "Experience real-time college bus tracking at your fingertips.",
-                    style: TextStyle(fontSize: 16, color: Colors.white70),
-                    textAlign: TextAlign.center,
+                Text(
+                  "Track your college bus in real-time with ease.",
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.white70,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),
 
@@ -112,26 +110,26 @@ class GetStartedPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 30),
-                      elevation: 10,
+                      elevation: 5,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.arrow_forward_ios, color: Colors.blue.shade900),
+                        Icon(Icons.arrow_forward_ios, color: Colors.indigo.shade800),
                         SizedBox(width: 10),
                         Text(
                           "Get Started",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade900,
+                            color: Colors.indigo.shade800,
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
               ],
             ),
           ),
