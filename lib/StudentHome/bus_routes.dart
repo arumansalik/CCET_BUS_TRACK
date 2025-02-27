@@ -14,6 +14,7 @@ class BusRoutesPage extends StatelessWidget {
         title: Text(
           'Bus Routes',
           style: TextStyle(
+              color: Colors.white,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
               fontFamily: 'overpass'

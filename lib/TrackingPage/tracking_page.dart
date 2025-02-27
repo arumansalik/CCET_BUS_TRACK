@@ -20,10 +20,9 @@ class _TrackingPageState extends State<TrackingPage> {
   LatLng? _studentLocation;
   String _eta = "Calculating...";
   String _nextStop = "-";
-  double _busSpeed = 0.0;
-  DateTime? _lastUpdated;
   StreamSubscription<DocumentSnapshot>? _busSubscription;
   final Set<Marker> _markers = {};
+  final Set<Polyline> _polylines = {};
 
   @override
   void initState() {
@@ -42,7 +41,7 @@ class _TrackingPageState extends State<TrackingPage> {
         .collection('liveLocations')
         .doc(widget.busId)
         .snapshots()
-        .listen((snapshot) async {
+        .listen((snapshot) {
       if (snapshot.exists) {
         final data = snapshot.data()!;
         final geoPoint = data['currentLocation'] as GeoPoint;
@@ -50,8 +49,6 @@ class _TrackingPageState extends State<TrackingPage> {
 
         setState(() {
           _busLocation = newLocation;
-          _busSpeed = (data['speed'] ?? 0.0).toDouble();
-          _lastUpdated = (data['lastUpdated'] as Timestamp).toDate();
           _nextStop = data['nextStop'] ?? "College Main Gate";
         });
 
@@ -69,10 +66,8 @@ class _TrackingPageState extends State<TrackingPage> {
       _busLocation!.latitude, _busLocation!.longitude,
     );
 
-    final speed = _busSpeed > 0 ? _busSpeed : 30.0;
-    final etaSeconds = distance / (speed * 1000 / 3600);
-
-    setState(() => _eta = etaSeconds > 60 ? "${(etaSeconds / 60).toStringAsFixed(0)} min" : "Arriving soon");
+    final etaMinutes = (distance / 500).ceil(); // Assume bus speed is ~30 km/h
+    setState(() => _eta = etaMinutes > 1 ? "$etaMinutes min" : "Arriving soon");
   }
 
   void _updateMap(LatLng position) {
@@ -82,14 +77,14 @@ class _TrackingPageState extends State<TrackingPage> {
       markerId: MarkerId('bus'),
       position: position,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      infoWindow: InfoWindow(title: ""
-          "${widget.busId}"),
+      infoWindow: InfoWindow(title: "Bus Location"),
     ));
     if (_studentLocation != null) {
       _markers.add(Marker(
         markerId: MarkerId('student'),
         position: _studentLocation!,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        infoWindow: InfoWindow(title: "Your Location"),
       ));
     }
   }
@@ -104,24 +99,14 @@ class _TrackingPageState extends State<TrackingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.busId} Tracking"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: _getStudentLocation,
-          )
-        ],
+        title: Text("Bus Tracking"),
       ),
       body: Stack(
         children: [
-          _busLocation == null
-              ? Center(child: CircularProgressIndicator())
-              : GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _busLocation!,
-              zoom: 16,
-            ),
+          GoogleMap(
+            initialCameraPosition: CameraPosition(target: LatLng(0, 0), zoom: 16),
             markers: _markers,
+            polylines: _polylines,
             myLocationEnabled: true,
             onMapCreated: (controller) => _mapController = controller,
           ),
@@ -156,9 +141,6 @@ class _TrackingPageState extends State<TrackingPage> {
             ),
             SizedBox(height: 10),
             Text("Next Stop: $_nextStop", style: TextStyle(color: Colors.white, fontSize: 16)),
-            Text("Speed: ${_busSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.white, fontSize: 16)),
-            if (_lastUpdated != null)
-              Text("Updated: ${DateFormat('hh:mm a').format(_lastUpdated!)}", style: TextStyle(color: Colors.white, fontSize: 14)),
           ],
         ),
       ),
