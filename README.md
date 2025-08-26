@@ -54,9 +54,43 @@ This project ensures students can **track buses live**, check **ETA (Estimated T
 
 ---
 
-## 📲 Installation & Setup
+## 🏗️ System Architecture
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ccet-bus-tracking.git
-   cd ccet-bus-tracking
+```mermaid
+flowchart TD
+    subgraph StudentApp[📱 Student App]
+        S1[Login with College Email]
+        S2[Select Route]
+        S3[View Live Map]
+        S4[Receive ETA Notifications]
+    end
+
+    subgraph DriverApp[🚍 Driver App]
+        D1[Login with Driver ID]
+        D2[Select Route]
+        D3[Share Live Location]
+    end
+
+    subgraph Firebase[🔥 Firebase Backend]
+        F1[Authentication]
+        F2[Firestore - Bus Location DB]
+        F3[Realtime DB - ETA Updates]
+        F4[Cloud Messaging - Notifications]
+    end
+
+    subgraph Google[🗺️ Google Maps API]
+        G1[Map Rendering]
+        G2[Distance & ETA Calculation]
+    end
+
+    S1 --> F1
+    D1 --> F1
+    S2 --> F2
+    D2 --> F2
+    D3 --> F2
+    S3 --> F2
+    F2 --> G1
+    G1 --> S3
+    F3 --> S4
+    F4 --> S4
+    G2 --> F3
